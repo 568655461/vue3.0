@@ -88,7 +88,6 @@ function reactive(){
 }
 // 便于维护，便于测试
 function effect(fn,options={}){
-    console.log(fn,'effect1=============')
     // 只考虑执行的逻辑，
     let e = createReactiveEffect(fn,options)
     if(!options.lazy){
@@ -99,10 +98,8 @@ function effect(fn,options={}){
 function createReactiveEffect(fn,options){
     //effect扩展配置
     const effect = function effect(...args){
-        console.log(args,'args===============')
         return run(effect, fn, args)
     }
-    console.log(effect,'effect2=================')
     effect.deps = []
     effect.computed = options.computed
     effect.lazy = options.lazy
@@ -110,12 +107,10 @@ function createReactiveEffect(fn,options){
 }
 // 调度，
 function run(effect, fn, args){
-    console.log(effectStack,effect,fn,'effectsdfdsfdsfdsfdsf===========')
     // 执行
     if(effectStack.indexOf(effect)===-1){
         try{
             effectStack.push(effect)
-            console.log(effectStack[1],'effectstacklllllllllllllll')
             return fn(...args)
         }finally{
             effectStack.pop()
