@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <div id="app"></div>
+    <button id="btn"></button>
+    <script src="./reactivity.js"></script>
+    <script>
+        const root = document.querySelector('#app');
+        const btn = document.querySelector('#btn');
+
+        const o = {
+            name:'senlyn',
+            age:1
+        }
+
+        let obj = reactive(o);
+        let double = computed(()=>obj.age*2)
+
+        effect(()=>{
+            root.innerHTML = `<h1>${obj.name}今年${obj.age}岁，乘以二就是${double}</h1>`
+        })
+
+        btn.addEventListener('click',()=>{
+            obj.age+=1;
+        },false)
+    </script>
+
+</body>
+</html>
