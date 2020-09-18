@@ -8,7 +8,7 @@
 <body>
     
     <div id="app"></div>
-    <button id="btn"></button>
+    <button id="btn">click</button>
     <script src="./reactivity.js"></script>
     <script>
         const root = document.querySelector('#app');
@@ -18,12 +18,12 @@
             name:'senlyn',
             age:1
         }
-
+        console.log(reactive,'reactive')
         let obj = reactive(o);
         let double = computed(()=>obj.age*2)
 
         effect(()=>{
-            root.innerHTML = `<h1>${obj.name}今年${obj.age}岁，乘以二就是${double}</h1>`
+            root.innerHTML = `<h1>${obj.name}今年${obj.age}岁，乘以二就是${double.value}</h1>`
         })
 
         btn.addEventListener('click',()=>{

@@ -16,14 +16,12 @@
 //         age:[effect]
 //     }
 
-const { triggerRef } = require("vue");
-
 // }
 const targetMap = new WeakMap();//防止内存泄漏，全局map
-const effectArr = [];
+const effectStack = [];
 //收集依赖
 function track(target,key){
-    const effect = effectArr[effectArr.length - 1];
+    const effect = effectStack[effectStack.length - 1];
     if(effect){
         //需要收集的情况
         let depMap = targetMap.get(target);
@@ -33,7 +31,7 @@ function track(target,key){
         }
         let dep = depMap.get(key);
         if(dep === undefined){
-            dep = new set();//防止重复
+            dep = new Set();//防止重复
             depMap.set(key,dep);
         }
         if(!dep.has(effect)){
@@ -74,7 +72,7 @@ const baseHandler = {
         return typeof ret === 'object' ? reactive(ret) : ret;
     },
     set(target,key,val){
-        const info = {oldVal = target[key],newVal:val};
+        const info = {oldVal:target[key],newVal:val};
         // 在这里执行一下收集到的effect
         target[key] = val;
         trigger(target,key,info);
@@ -82,7 +80,8 @@ const baseHandler = {
     }
 
 }
-function reactive(){
+function reactive(target){
+    console.log(target,'target')
     const observed = new Proxy(target,baseHandler);
     return observed;
 }
